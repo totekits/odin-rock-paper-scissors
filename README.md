@@ -1,10 +1,5 @@
 # odin-rock-paper-scissors
 ## pseudocode
-### Create UI
-- game name
-- game instructions
-- a form field for player input
-### Create script
 - user types one of the three inputs: rock, paper, scissors
 - computer generates one of the three inputs: rock, paper, scissors
 - game compares user and computer inputs
