@@ -1,46 +1,62 @@
-// declare global variables
-const options = ["rock", "paper", "scissors"];
 let playerScore = 0;
 let computerScore = 0;
+let result = " ";
+let gameresult = " ";
 
-// repeat five rounds
-for (let round = 1; round <= 5; round++) {
+function getPlayerChoice(event) {
+    const playerChoice = event.target.id;
+    const computerChoice = getComputerChoice();
+    playRound(playerChoice, computerChoice);
+}
 
-// get player input
-const playerChoice = prompt("Rock, Paper or Scissors?").toLowerCase();    
-console.log("You: " + playerChoice);
+function getComputerChoice() {
+    const choices = ["rock", "paper", "scissors"];
+    const computerChoice = choices[Math.floor(Math.random() * choices.length)];
+    return computerChoice;
+}
 
-// get computer output
-const computerChoice = options[Math.floor(Math.random() * options.length)];
-console.log("Computer: " + computerChoice);
-
-// get result 
-let result;
-if (playerChoice === computerChoice) {
-    result = " It's a tie!";
-} else if (
-    (playerChoice === "rock" && computerChoice === "scissors") ||  
-    (playerChoice === "paper" && computerChoice === "rock") ||
-    (playerChoice === "scissors" && computerChoice === "paper")
+function playRound(playerChoice, computerChoice) {
+    if (playerChoice === computerChoice) {
+        result = "It's a tie!";
+    } else if (
+        ((playerChoice === "rock") && (computerChoice === "scissors")) ||
+        ((playerChoice === "paper") && (computerChoice === "rock")) ||
+        ((playerChoice === "scissors") && (computerChoice === "paper"))
     ) {
-    result = " You win!";
-    playerScore++;
-} else {
-    result = " Computer wins!";
-    computerScore++;
-} console.log("Round-" + round + result)
+        playerScore++;
+        result = "You win! " + playerChoice + " beats " + computerChoice;
+        updateScoreboard();
+
+        if (playerScore === 5) {
+            gameresult = "You win the game!";
+            endGame();
+        }
+    } else {
+        computerScore++;
+        result = "Computer wins! " + computerChoice + " beats " + playerChoice;
+        updateScoreboard();
+
+        if (computerScore === 5) {
+            gameresult = "Computer wins the game!";
+            endGame();
+        }
+    }
 }
 
-// display result in console
-let finalResult;
-if (playerScore === computerScore) {
-finalResult = "IT'S A TIE!";
-} else if (playerScore > computerScore) {
-    finalResult = "YOU WIN!"; 
-} else {
-    finalResult = "COMPUTER WINS!"
+function updateScoreboard() {
+    score = "Player = " + playerScore + "<br>Computer = " + computerScore;
+    document.getElementById("scoreboard").innerHTML = score;
+    document.getElementById("roundresult").innerHTML = result;
+    document.getElementById("gameresult").innerHTML = gameresult; // Added this line
 }
-console.log(finalResult)
-console.log("You: " + playerScore);
-console.log("Computer: " + computerScore);
 
+function endGame() {
+    updateScoreboard();
+    document.getElementById("rock").removeEventListener("click", getPlayerChoice);
+    document.getElementById("paper").removeEventListener("click", getPlayerChoice);
+    document.getElementById("scissors").removeEventListener("click", getPlayerChoice);
+}
+
+document.getElementById("rock").addEventListener("click", getPlayerChoice);
+document.getElementById("paper").addEventListener("click", getPlayerChoice);
+document.getElementById("scissors").addEventListener("click", getPlayerChoice);
